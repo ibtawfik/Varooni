@@ -18,14 +18,13 @@ public class JavaClient extends VoronoiClient{
     String name;
     State currentState = new State();
     List<State> states = new LinkedList<State>();
+    boolean isFirstMove = true;
 
 
     public JavaClient(String server, int port, String username, int n) {
         super(server, port, username);
         name = username;
         grid = new int[n][n];
-        db = DBMaker.fileDB(new File(username)).cacheHashTableEnable().cacheSize(5000000).make();
-        seenStates = db.hashMapCreate("States").makeOrGet();
     }
 
     // random strategy
@@ -36,10 +35,24 @@ public class JavaClient extends VoronoiClient{
         }
 
         if (command.matches("[A-Za-z0-9-_]+ \\d+ \\d+")) {
+            //Check if we are second player or first player
+            if(isFirstMove){
+                //then we are second player
+                db = DBMaker.fileDB(new File("AI-2")).cacheHashTableEnable().cacheSize(5000000).make();
+                seenStates = db.hashMapCreate("States").makeOrGet();
+                isFirstMove = false;
+            }
             updateBoard(command);
         }
 
         if (command.equals("MOVE")) {
+            //Check if we are second player or first player
+            if(isFirstMove){
+                //then we are first player
+                db = DBMaker.fileDB(new File("AI")).cacheHashTableEnable().cacheSize(5000000).make();
+                seenStates = db.hashMapCreate("States").makeOrGet();
+                isFirstMove = false;
+            }
             return makeMove();
         }
 
@@ -50,6 +63,11 @@ public class JavaClient extends VoronoiClient{
         }
 
         if (command.equals("END")) {
+            //save the db
+            db.commit();
+            //close the db
+            db.close();
+
             System.exit(0);
         }
 
