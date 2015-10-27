@@ -169,10 +169,10 @@ public class JavaClient extends VoronoiClient{
         int bestY = 0;
         Range range = RangeTranslator.getRange(quadrent);
         int xMin = range.xMin;
-        int xCenter = range.xMin + (range.xMax - range.xMin);
+        int xCenter = range.xMin + (range.xMax - range.xMin)/2;
         int xMax = range.xMax;
         int yMin = range.yMin;
-        int yCenter = range.yMin + (range.yMax - range.yMin);
+        int yCenter = range.yMin + (range.yMax - range.yMin)/2;
         int yMax = range.yMax;
 
         //Test all combinations of x and y to know where int eh qudrent to place our stone
@@ -386,7 +386,7 @@ public class JavaClient extends VoronoiClient{
         //Just move horizontially across the top towards the center of the range
         int xOffset = 1;
         int x = range.xMin;
-        int y = range.yMin + (range.yMax - range.yMin);
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         while (grid[x][y] != 0){
             x = x + xOffset;
         }
@@ -400,7 +400,7 @@ public class JavaClient extends VoronoiClient{
         //Just move horizontially towards the center of the range
         int xOffset = -1;
         int x = range.xMax;
-        int y = range.yMin + (range.yMax - range.yMin);
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         while (grid[x][y] != 0){
             x = x + xOffset;
         }
@@ -414,8 +414,8 @@ public class JavaClient extends VoronoiClient{
 
     private Point migrateCenterCenter(Range range){
         //Randomly select points around the center
-        int x = range.xMin + (range.xMax - range.xMin);
-        int y = range.yMin + (range.yMax - range.yMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         int returnX = x;
         int returnY = y;
         while (grid[returnX][returnY] != 0){
@@ -441,7 +441,7 @@ public class JavaClient extends VoronoiClient{
         //Just move y down towards the center
         //Just move horizontially across the top towards the center of the range
         int yOffset = 1;
-        int x = range.xMin + (range.xMax - range.xMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
         int y = range.yMin;
         while (grid[x][y] != 0){
             y = y + yOffset;
@@ -486,7 +486,7 @@ public class JavaClient extends VoronoiClient{
     private Point migrateBottomCenter(Range range){
         //Just move y up towards the center
         int yOffset = -1;
-        int x = range.xMin + (range.xMax - range.xMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
         int y = range.yMax;
         while (grid[x][y] != 0){
             y = y + yOffset;

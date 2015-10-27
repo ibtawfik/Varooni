@@ -82,25 +82,25 @@ public class Trainer {
         State bestState = null;
         int bestQuadrent = 0;
 
-//        for(int i = 0; i < 400; i++){
-//            State nextState = currentState.clone();
-//            nextState.updateState(1,i);
-//            //If we've seen this state before then check its win rate vs our current best, choose the winnegest path
-//            String key  = nextState.getKey();
-//            int size = seenStates.size();
-//            if(seenStates.containsKey(nextState.getKey())){
-//                nextState = seenStates.get(nextState.getKey());
-//                if(bestState == null){
-//                    bestState = nextState;
-//                    bestQuadrent = i;
-//                }else{
-//                    if(bestState.winRate() < nextState.winRate()){
-//                        bestState = nextState;
-//                        bestQuadrent = i;
-//                    }
-//                }
-//            }
-//        }
+        for(int i = 0; i < 400; i++){
+            State nextState = currentState.clone();
+            nextState.updateState(1,i);
+            //If we've seen this state before then check its win rate vs our current best, choose the winnegest path
+            String key  = nextState.getKey();
+            int size = seenStates.size();
+            if(seenStates.containsKey(nextState.getKey())){
+                nextState = seenStates.get(nextState.getKey());
+                if(bestState == null){
+                    bestState = nextState;
+                    bestQuadrent = i;
+                }else{
+                    if(bestState.winRate() < nextState.winRate()){
+                        bestState = nextState;
+                        bestQuadrent = i;
+                    }
+                }
+            }
+        }
 
         if(bestState == null){
             return fullRandomMove();
@@ -198,10 +198,10 @@ public class Trainer {
         int bestY = 0;
         Range range = RangeTranslator.getRange(quadrent);
         int xMin = range.xMin;
-        int xCenter = range.xMin + (range.xMax - range.xMin);
+        int xCenter = range.xMin + (range.xMax - range.xMin)/2;
         int xMax = range.xMax;
         int yMin = range.yMin;
-        int yCenter = range.yMin + (range.yMax - range.yMin);
+        int yCenter = range.yMin + (range.yMax - range.yMin)/2;
         int yMax = range.yMax;
 
         //Test all combinations of x and y to know where int eh qudrent to place our stone
@@ -415,7 +415,7 @@ public class Trainer {
         //Just move horizontially across the top towards the center of the range
         int xOffset = 1;
         int x = range.xMin;
-        int y = range.yMin + (range.yMax - range.yMin);
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         while (grid[x][y] != 0){
             x = x + xOffset;
         }
@@ -429,7 +429,7 @@ public class Trainer {
         //Just move horizontially towards the center of the range
         int xOffset = -1;
         int x = range.xMax;
-        int y = range.yMin + (range.yMax - range.yMin);
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         while (grid[x][y] != 0){
             x = x + xOffset;
         }
@@ -443,8 +443,8 @@ public class Trainer {
 
     private Point migrateCenterCenter(Range range){
         //Randomly select points around the center
-        int x = range.xMin + (range.xMax - range.xMin);
-        int y = range.yMin + (range.yMax - range.yMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
+        int y = range.yMin + (range.yMax - range.yMin)/2;
         int returnX = x;
         int returnY = y;
         while (grid[returnX][returnY] != 0){
@@ -470,7 +470,7 @@ public class Trainer {
         //Just move y down towards the center
         //Just move horizontially across the top towards the center of the range
         int yOffset = 1;
-        int x = range.xMin + (range.xMax - range.xMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
         int y = range.yMin;
         while (grid[x][y] != 0){
             y = y + yOffset;
@@ -515,7 +515,7 @@ public class Trainer {
     private Point migrateBottomCenter(Range range){
         //Just move y up towards the center
         int yOffset = -1;
-        int x = range.xMin + (range.xMax - range.xMin);
+        int x = range.xMin + (range.xMax - range.xMin)/2;
         int y = range.yMax;
         while (grid[x][y] != 0){
             y = y + yOffset;
